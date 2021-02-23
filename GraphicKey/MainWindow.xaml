@@ -5,8 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GraphicKey"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title=" " WindowStyle="None" Height="400" ResizeMode="NoResize" Width="300">
+    <Window.Resources>
+        <Style TargetType="Image">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    <Border BorderBrush="Green" BorderThickness="1.5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0" Background="Gainsboro" MouseLeftButtonDown="DockPanel_MouseLeftButtonDown" >
+                <Border DockPanel.Dock="Bottom" BorderBrush="Green" BorderThickness="0.5"/>
+                <TextBlock Margin="4" Text="Graphic Key demonstration" Height="15"/>
+            </DockPanel>
+            <Image  Margin="2" HorizontalAlignment="Right" Source="Resources/close.png" MouseUp="Image_MouseUp"/>
+            <UniformGrid Grid.Row="2" Rows="1">
+                <Button Margin="4" Content="Validate Key"/>
+                <Button Margin="4" Content="Clear Key"/>
+            </UniformGrid>
+            <Grid Grid.Row="1" x:Name="mainGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </Grid>
+    </Border>
 </Window>

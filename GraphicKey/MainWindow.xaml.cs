@@ -20,9 +20,23 @@ namespace GraphicKey
     /// </summary>
     public partial class MainWindow : Window
     {
+        StartPointsDrawer drawer;
+
         public MainWindow()
         {
             InitializeComponent();
+            drawer = new StartPointsDrawer(this);
+            drawer.DrawStartPoints();
+        }
+
+        private void DockPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
+        }
+
+        private void Image_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            this.Close();
         }
     }
 }

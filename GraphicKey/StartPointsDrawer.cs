@@ -14,16 +14,22 @@ namespace GraphicKey
     class StartPointsDrawer
     {
         MainWindow window;
+        Ellipse previousEllipse;
         List<Ellipse> borderCollection;
         List<Line> lineCollection;
+        StringBuilder graphicKey;
+
+        string finishedGraphicKey;
+        int count = 0; /*number of selected edges */
         bool firstEdgeSelected = false;
-        Ellipse previousEllipse;
+        bool isKeyEnded = false;
 
         public StartPointsDrawer(MainWindow window)
         {
             this.window = window;
             borderCollection = new List<Ellipse>();
             lineCollection = new List<Line>();
+            graphicKey = new StringBuilder();
         }
 
         public void DrawStartPoints()
@@ -43,18 +49,35 @@ namespace GraphicKey
             }
         }
 
+        public void SetKey()
+        {
+            if (isKeyEnded)
+            {
+                MessageBox.Show("Klucz graficzny został poprawnie zapisany", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                ClearCollections();
+                finishedGraphicKey = graphicKey.ToString();
+                graphicKey.Clear();
+            }
+            else
+            {
+                MessageBox.Show("Wprowadz klucz graficzny", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
         private void Ellipse_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            if (firstEdgeSelected)
+            if (firstEdgeSelected && !isKeyEnded)
             {
                 if (Mouse.LeftButton == MouseButtonState.Pressed)
                 {
+                    count++;
                     DrawBorder((Ellipse)sender);
                     //difference X between two  = 95, +5 is radius of ellipse
                     Line line = new Line { X1 = Canvas.GetLeft(previousEllipse) + 5, Y1 = Canvas.GetTop(previousEllipse) + 5, X2 = Canvas.GetLeft((Ellipse)sender) + 5, Y2 = Canvas.GetTop((Ellipse)sender) + 5, Stroke = Brushes.Black, StrokeThickness = 2 };
                     previousEllipse = (Ellipse)sender;
                     window.mainCanvas.Children.Add(line);
                     lineCollection.Add(line);
+                    graphicKey.Append(((Ellipse)sender).Name);
                 }
             }
         }
@@ -62,20 +85,31 @@ namespace GraphicKey
         private void Ellipse_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Ellipse ellipse = (Ellipse)sender;
-            if (ellipse != previousEllipse)
+            if (count == 0 || count == 1)
             {
+                graphicKey.Clear();
                 double leftPosition = Canvas.GetLeft(ellipse) + 20;
                 double topPosition = Canvas.GetTop(ellipse) + 20;
                 window.mainCanvas.Children.Remove(borderCollection.First(x => x.Name == $"border{leftPosition}{topPosition}"));
                 borderCollection.Remove(borderCollection.First(x => x.Name == $"border{leftPosition}{topPosition}"));
             }
+            else
+            {
+                count++;
+                isKeyEnded = true;
+            }
         }
 
         private void Ellipse_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            firstEdgeSelected = true;
-            previousEllipse = (Ellipse)sender;
-            DrawBorder((Ellipse)sender);
+            if (!isKeyEnded)
+            {
+                firstEdgeSelected = true;
+                count = 1;
+                graphicKey.Append(((Ellipse)sender).Name);
+                DrawBorder((Ellipse)sender);
+                previousEllipse = (Ellipse)sender;
+            }
         }
 
         private void DrawBorder(Ellipse ellipse)
@@ -91,12 +125,39 @@ namespace GraphicKey
             borderCollection.Add(borderEllipse);
         }
 
+        public void ClearCollections()
+        {
+            foreach (Line l in lineCollection) window.mainCanvas.Children.Remove(l);
+            foreach (Ellipse e in borderCollection) window.mainCanvas.Children.Remove(e);
+            lineCollection.Clear();
+            borderCollection.Clear();
+            isKeyEnded = false;
+            firstEdgeSelected = false;
+            finishedGraphicKey = "";
+            count = 0;
+        }
+
         public void ClearAll()
         {
             foreach (Line l in lineCollection) window.mainCanvas.Children.Remove(l);
             foreach (Ellipse e in borderCollection) window.mainCanvas.Children.Remove(e);
             lineCollection.Clear();
             borderCollection.Clear();
+            isKeyEnded = false;
+            firstEdgeSelected = false;
+            finishedGraphicKey = "";
+            graphicKey.Clear();
+            count = 0;
+        }
+
+        public void ValidateKey()
+        {
+            if(graphicKey.ToString() == finishedGraphicKey)
+            {
+                foreach (Ellipse e in borderCollection) e.Stroke = Brushes.Lime;
+            }
+            else 
+                foreach (Ellipse e in borderCollection) e.Stroke = Brushes.Red;
         }
     }
 }

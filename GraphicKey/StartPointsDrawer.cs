@@ -53,14 +53,14 @@ namespace GraphicKey
         {
             if (isKeyEnded)
             {
-                MessageBox.Show("Klucz graficzny został poprawnie zapisany", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                window.infoField.Text = "Klucz graficzny został poprawnie zapisany";
                 ClearCollections();
                 finishedGraphicKey = graphicKey.ToString();
                 graphicKey.Clear();
             }
             else
             {
-                MessageBox.Show("Wprowadz klucz graficzny", "Informacja", MessageBoxButton.OK, MessageBoxImage.Information);
+                window.infoField.Text = "Wprowadz klucz graficzny";
             }
         }
 
@@ -147,6 +147,7 @@ namespace GraphicKey
             firstEdgeSelected = false;
             finishedGraphicKey = "";
             graphicKey.Clear();
+            window.infoField.Text = "";
             count = 0;
         }
 

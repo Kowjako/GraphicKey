@@ -33,7 +33,7 @@
                 <Button Margin="4" Content="Set Key" Click="Button_Click_1"/>
             </UniformGrid>
             <Canvas x:Name="mainCanvas" Grid.Row="1">
-                
+                <TextBlock x:Name="infoField" Canvas.Left="0" Canvas.Top="300" Width="300" TextAlignment="Center"/>
             </Canvas>
         </Grid>
     </Border>

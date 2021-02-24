@@ -28,9 +28,9 @@
             </DockPanel>
             <Image  Margin="2" HorizontalAlignment="Right" Source="Resources/close.png" MouseUp="Image_MouseUp"/>
             <UniformGrid Grid.Row="2" Rows="1">
-                <Button Margin="4" Content="Validate Key"/>
+                <Button Margin="4" Content="Validate Key" Click="Button_Click_2"/>
                 <Button Margin="4" Content="Clear Key" Click="Button_Click"/>
-                <Button Margin="4" Content="Set Key"/>
+                <Button Margin="4" Content="Set Key" Click="Button_Click_1"/>
             </UniformGrid>
             <Canvas x:Name="mainCanvas" Grid.Row="1">
                 
